@@ -1,0 +1,44 @@
+{
+  "name": "rss-reader-sncorp",
+  "version": "0.0.1",
+  "description": "This is my third project at Hexlet",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sncorp04/project-lvl3-s452.git"
+  },
+  "keywords": [
+    "rss-reader",
+    "study",
+    "project",
+    "hexlet"
+  ],
+  "author": "Alexander Malyutin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sncorp04/project-lvl3-s452/issues"
+  },
+  "homepage": "https://github.com/sncorp04/project-lvl3-s452#readme",
+  "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.5",
+    "css-loader": "^2.1.1",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-import": "^2.17.2",
+    "html-webpack-plugin": "^3.2.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.1"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.4.3",
+    "bootstrap": "^4.3.1"
+  }
+}
