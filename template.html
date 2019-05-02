@@ -4,25 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>RSS Reader</title>
 </head>
 <body>
-    <div class="contaner">
+    <div class="container">
         <div class="row">
             <div class="col">
                 <div class="jumbotron">
                     <h1 class="display-4">RSS Reader</h1>
-                    <label for="basic-url" class="lead">Enter the url of the rss feed and click Add</label>
                     <hr class="my-4">
-                    <form class="form-inline">
+                    <label for="add-field" class="lead">Enter the url of the rss feed and click Add</label>
+                    <form id="add-form">
                         <div class="input-group">
-                            <input type="text" class="form-control" id="basic-url" placeholder="Please enter the URL">
+                            <input type="text" class="form-control" id="add-field" placeholder="Please enter the URL">
                             <div class="input-group-append">
-                                <span><button type="submit" class="btn btn-primary">Add</button></span>
+                                <button type="submit" id="add-button" class="btn btn-primary" disabled>Add</button>
                             </div>                                
                         </div>
-                    </form>                    
+                    </form>
+                    <p class="text-danger" id="error"></p>                  
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <ul id="rssList" class="list-group"></ul>
             </div>
         </div>
     </div>
