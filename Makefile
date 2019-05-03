@@ -10,3 +10,6 @@ build-watch:
 
 lint:
 	npx eslint .
+
+deploy:
+	surge dist http://guttural-actor.surge.sh/

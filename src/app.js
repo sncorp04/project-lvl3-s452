@@ -58,7 +58,6 @@ export default () => {
     axios.get(`https://cors-anywhere.herokuapp.com/${state.requestURL}`)
       .then((response) => {
         try {
-          console.log(state.listURLs);
           const parser = new DOMParser();
           const data = parser.parseFromString(response.data, 'application/xml');
           const rssDataChannel = {

@@ -14,10 +14,12 @@ export default (state) => {
       valid: () => {
         addField.classList.remove('is-invalid');
         addField.classList.add('is-valid');
+        button.textContent = 'Add';
         button.disabled = false;
       },
       invalid: () => {
         addField.classList.add('is-invalid');
+        button.textContent = 'Add';
         button.disabled = true;
       },
       loading: () => {
