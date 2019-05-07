@@ -1,4 +1,5 @@
 import { watch } from 'melanke-watchjs';
+import $ from 'jquery';
 
 export default (state) => {
   watch(state, 'formState', () => {
@@ -46,13 +47,32 @@ export default (state) => {
     ulItems.className = 'list-group';
     articles.forEach((item) => {
       const title = item.querySelector('title').textContent;
+      const description = item.querySelector('description').textContent;
       const link = item.querySelector('link').textContent;
       const a = document.createElement('a');
       a.href = link;
       a.textContent = title;
       const liChannel = document.createElement('li');
       liChannel.className = 'list-group-item';
-      liChannel.appendChild(a);
+      const div = document.createElement('div');
+      div.classList.add('col-10');
+      div.appendChild(a);
+      const button = document.createElement('button');
+      button.classList.add('btn', 'btn-primary');
+      button.setAttribute('type', 'button');
+      button.setAttribute('data-toggle', 'modal');
+      button.setAttribute('data-target', '#myModal');
+      button.setAttribute('data-title', title);
+      button.setAttribute('data-description', description);
+      button.textContent = 'Detail';
+      const divBtn = document.createElement('div');
+      divBtn.className = 'col';
+      divBtn.appendChild(button);
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.appendChild(div);
+      row.appendChild(divBtn);
+      liChannel.appendChild(row);
       ulItems.appendChild(liChannel);
     });
     li.appendChild(ulItems);
@@ -62,5 +82,12 @@ export default (state) => {
   watch(state, 'error', () => {
     const errorField = document.getElementById('error');
     errorField.textContent = state.error;
+  });
+
+  const modalWindow = document.getElementById('myModal');
+  $('#myModal').on('show.bs.modal', (event) => {
+    const button = $(event.relatedTarget);
+    modalWindow.querySelector('.modal-body').innerHTML = button.data('description');
+    modalWindow.querySelector('.modal-title').innerHTML = button.data('title');
   });
 };

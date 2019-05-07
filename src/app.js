@@ -14,6 +14,7 @@ export default () => {
     rssChannelsCount: 0,
     rssData: [],
     error: '',
+    modalWindow: 'hide',
   };
 
   const validationActions = [
@@ -80,5 +81,6 @@ export default () => {
         state.formState = 'init';
       });
   });
+
   render(state);
 };
