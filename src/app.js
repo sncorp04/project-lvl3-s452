@@ -9,35 +9,30 @@ const getAction = (listOfActions, urlString, objState) => (
   listOfActions.find(({ check }) => check(urlString, objState))
 );
 
+const parse = (dataForParse, url, numberOfChannel) => {
+  const parser = new DOMParser();
+  const data = parser.parseFromString(dataForParse, 'application/xml');
+  if (data.querySelector('parsererror')) {
+    throw new Error('Invalid URL. Please check the URL you entered');
+  }
+  const articles = [...data.querySelectorAll('item')]
+    .map(item => ({
+      title: item.querySelector('title').textContent,
+      description: item.querySelector('description').textContent,
+      link: item.querySelector('link').textContent,
+    }));
+  return {
+    title: data.querySelector('title').textContent,
+    description: data.querySelector('description').textContent,
+    articles,
+    url,
+    numberOfChannel,
+  };
+};
+
 const loadAndParseData = (url, numberOfChannel) => (
   axios.get(`https://cors-anywhere.herokuapp.com/${url}`)
-    .then((response) => {
-      try {
-        const parser = new DOMParser();
-        const data = parser.parseFromString(response.data, 'application/xml');
-        const articles = [...data.querySelectorAll('item')]
-          .map(item => ({
-            title: item.querySelector('title').textContent,
-            description: item.querySelector('description').textContent,
-            link: item.querySelector('link').textContent,
-          }));
-        return {
-          error: '',
-          title: data.querySelector('title').textContent,
-          description: data.querySelector('description').textContent,
-          articles,
-          url,
-          numberOfChannel,
-        };
-      } catch {
-        return {
-          error: 'Invalid URL. Please check the URL you entered',
-        };
-      }
-    })
-    .catch(() => ({
-      error: 'Network error. Please try again later',
-    }))
+    .then(response => parse(response.data, url, numberOfChannel))
 );
 
 export default () => {
@@ -91,15 +86,14 @@ export default () => {
     state.formState = 'loading';
     loadAndParseData(state.requestURL, state.rssChannelsCount)
       .then((rssDataChannel) => {
-        if (rssDataChannel.error !== '') {
-          state.error = rssDataChannel.error;
-          state.formState = 'init';
-          return;
-        }
         state.rssChannelsData.push(rssDataChannel);
         state.formState = 'init';
         state.requestURL = '';
         state.rssChannelsCount += 1;
+      })
+      .catch((error) => {
+        state.formState = 'invalid';
+        state.error = error;
       });
   });
 
@@ -121,10 +115,14 @@ export default () => {
             });
           }
         });
-      });
+      })
+      .finally(setTimeout(() => {
+        updateArticles();
+        state.updated = false;
+      }, 5000));
   };
 
-  setInterval(updateArticles, 5000);
+  setTimeout(updateArticles, 5000);
 
   watch(state, 'formState', () => {
     const button = document.getElementById('add-button');
@@ -172,7 +170,8 @@ export default () => {
   });
 
   watch(state, 'updated', () => {
-    renderArticles(state);
-    state.updated = false;
+    if (state.updated) {
+      renderArticles(state);
+    }
   });
 };
